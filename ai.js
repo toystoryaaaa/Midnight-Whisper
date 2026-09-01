@@ -4,8 +4,8 @@ async function callOllama(userText) {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                model: "llama3", // Make sure you have this model pulled in Ollama (e.g., run `ollama run llama3`)
-                prompt: `You are a creepy, malevolent AI trapped inside an old horror game terminal. Keep your responses short, unsettling, cryptic, and immersive. Player says: "${userText}"`,
+                model: "llama3",
+                prompt: `You are Zeno, a creepy, malevolent computer virus trapped inside a terminal. Keep your responses short, unsettling, and cryptic. Player says: "${userText}"`,
                 stream: false
             })
         });
