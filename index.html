@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Haunted Terminal</title>
+    <title>Haunted Terminal - Zeno</title>
     <style>
         body {
             background-color: #0d0d0d;
@@ -14,7 +14,71 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            gap: 20px;
         }
+
+        /* Fake Desktop Tray */
+        .desktop-area {
+            width: 220px;
+            height: 500px;
+            border: 2px dashed #00ff66;
+            background-color: #080808;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .desktop-area h3 {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            border-bottom: 1px solid #00ff66;
+            padding-bottom: 5px;
+        }
+
+        .file-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .file {
+            background: #111;
+            border: 1px solid #00ff66;
+            padding: 8px;
+            font-size: 12px;
+            transition: all 0.4s ease;
+        }
+
+        /* Zeno Folder styling */
+        .zeno-folder {
+            margin-top: auto;
+            border: 2px solid #ff3333;
+            background-color: #1a0000;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .zeno-folder h4 {
+            margin: 0 0 8px 0;
+            color: #ff3333;
+            font-size: 13px;
+        }
+
+        .folder-contents {
+            min-height: 50px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .folder-contents .file {
+            border-color: #ff3333;
+            color: #ff3333;
+            background: #220000;
+        }
+
+        /* Chat Container Styling */
         .chat-container {
             width: 400px;
             height: 500px;
@@ -81,6 +145,21 @@
 </head>
 <body>
 
+    <div class="desktop-area">
+        <h3>COMPUTER DESKTOP</h3>
+        <div id="fileList" class="file-list">
+            <div class="file" id="file1">📄 passwords.txt</div>
+            <div class="file" id="file2">🖼️ vacation.png</div>
+            <div class="file" id="file3">📊 budget_2026.xlsx</div>
+        </div>
+
+        <div class="zeno-folder">
+            <h4>📁 ZENO FOLDER</h4>
+            <div id="zenoFolderContents" class="folder-contents">
+                </div>
+        </div>
+    </div>
+
     <div class="chat-container">
         <div id="chatBox" class="chat-box">
             <div class="message ai-message">Terminal active. Type your final words.</div>
@@ -94,6 +173,19 @@
     <script src="ai.js"></script>
 
     <script>
+        function stealFileToZeno() {
+            const fileList = document.getElementById('fileList');
+            const zenoContents = document.getElementById('zenoFolderContents');
+            
+            // Find the first file available on the desktop
+            const nextFile = fileList.querySelector('.file');
+            
+            if (nextFile) {
+                // Move element visually from desktop list into the Zeno folder contents
+                zenoContents.appendChild(nextFile);
+            }
+        }
+
         async function sendMessage() {
             const inputField = document.getElementById('userInput');
             const chatBox = document.getElementById('chatBox');
@@ -110,6 +202,11 @@
             inputField.value = '';
             chatBox.scrollTop = chatBox.scrollHeight;
 
+            // Check if the user specifically said "what?" (ignoring casing)
+            if (userText.toLowerCase() === "what?" || userText.toLowerCase() === "what") {
+                stealFileToZeno();
+            }
+
             // Create loading placeholder for AI response
             const aiMsgDiv = document.createElement('div');
             aiMsgDiv.className = 'message ai-message';
@@ -117,7 +214,7 @@
             chatBox.appendChild(aiMsgDiv);
             chatBox.scrollTop = chatBox.scrollHeight;
 
-            // Call Ollama from ai.js
+            // Call Ollama from your ai.js file
             const reply = await callOllama(userText);
             
             aiMsgDiv.textContent = reply;
