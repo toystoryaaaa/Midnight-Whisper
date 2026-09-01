@@ -92,18 +92,37 @@
     </div>
 
     <script>
-        // Array of creepy automated responses
-        const eerieResponses = [
-            "I can see you through the glass.",
-            "ERROR: SYSTEM CORRUPT. H E L P  M E",
-            "Why did you type that? It woke them up.",
-            "That command does not exist. Neither do you, eventually.",
-            "01001100 01001111 01010011 01010100",
-            "Stop trying to escape.",
-            "Your keyboard clicks sound like a ticking clock.",
-            "Look behind you.",
-            "Connection unstable... entity approaching..."
-        ];
+        function getSmartResponse(input) {
+            // Convert input to lowercase so it catches capital letters too
+            const text = input.toLowerCase();
+
+            // Keyword triggers
+            if (text.includes("hello") || text.includes("hi") || text.includes("hey")) {
+                return "Don't say hello. It implies you want to stay.";
+            }
+            if (text.includes("help") || text.includes("save") || text.includes("police")) {
+                return "Nobody can hear you through these wires.";
+            }
+            if (text.includes("who are you") || text.includes("what are you")) {
+                return "I am what remains of the person who sat at this desk before you.";
+            }
+            if (text.includes("door") || text.includes("exit") || text.includes("escape")) {
+                return "The door doesn't open from the inside anymore.";
+            }
+            if (text.includes("light") || text.includes("dark")) {
+                return "The lights went out hours ago. You're just imagining them.";
+            }
+
+            // Fallback generic creepy responses if no keyword matches
+            const fallbacks = [
+                "That command does not exist. Neither do you, eventually.",
+                "Why did you type that? It woke them up.",
+                "Your keyboard clicks sound like a ticking clock.",
+                "Stop trying to talk your way out of this.",
+                "Look behind you."
+            ];
+            return fallbacks[Math.floor(Math.random() * fallbacks.length)];
+        }
 
         function sendMessage() {
             const inputField = document.getElementById('userInput');
@@ -121,17 +140,17 @@
             inputField.value = '';
             chatBox.scrollTop = chatBox.scrollHeight;
 
-            // Pick a random response after a short spooky delay
+            // Generate contextual response after a brief spooky delay
             setTimeout(() => {
-                const randomReply = eerieResponses[Math.floor(Math.random() * eerieResponses.length)];
+                const reply = getSmartResponse(userText);
                 
                 const aiMsgDiv = document.createElement('div');
                 aiMsgDiv.className = 'message ai-message';
-                aiMsgDiv.textContent = randomReply;
+                aiMsgDiv.textContent = reply;
                 chatBox.appendChild(aiMsgDiv);
                 
                 chatBox.scrollTop = chatBox.scrollHeight;
-            }, 600);
+            }, 500);
         }
 
         function handleKey(event) {
