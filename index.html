@@ -1,7 +1,144 @@
 <!DOCTYPE html>
-<html>
-  <title>Zeno</title>
-  <p1>
-    <h1>Welcome to Zeno! How can we help you today?</h1>
-  </p1>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haunted Terminal</title>
+    <style>
+        body {
+            background-color: #0d0d0d;
+            color: #00ff66;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .chat-container {
+            width: 400px;
+            height: 500px;
+            border: 2px solid #00ff66;
+            background-color: #121212;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 15px rgba(0, 255, 102, 0.3);
+        }
+        .chat-box {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .message {
+            padding: 8px 12px;
+            border-radius: 4px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+        .user-message {
+            align-self: flex-end;
+            background-color: #003311;
+            color: #ffffff;
+            border: 1px solid #00ff66;
+        }
+        .ai-message {
+            align-self: flex-start;
+            background-color: #220000;
+            color: #ff3333;
+            border: 1px solid #ff3333;
+        }
+        .input-area {
+            display: flex;
+            border-top: 2px solid #00ff66;
+            background-color: #000;
+        }
+        input {
+            flex: 1;
+            padding: 10px;
+            background: transparent;
+            border: none;
+            color: #00ff66;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            outline: none;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #00ff66;
+            color: #000;
+            border: none;
+            font-weight: bold;
+            font-family: 'Courier New', Courier, monospace;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #00cc52;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="chat-container">
+        <div id="chatBox" class="chat-box">
+            <div class="message ai-message">Terminal active. Type your final words.</div>
+        </div>
+        <div class="input-area">
+            <input type="text" id="userInput" placeholder="Speak..." onkeypress="handleKey(event)">
+            <button onclick="sendMessage()">SEND</button>
+        </div>
+    </div>
+
+    <script>
+        // Array of creepy automated responses
+        const eerieResponses = [
+            "I can see you through the glass.",
+            "ERROR: SYSTEM CORRUPT. H E L P  M E",
+            "Why did you type that? It woke them up.",
+            "That command does not exist. Neither do you, eventually.",
+            "01001100 01001111 01010011 01010100",
+            "Stop trying to escape.",
+            "Your keyboard clicks sound like a ticking clock.",
+            "Look behind you.",
+            "Connection unstable... entity approaching..."
+        ];
+
+        function sendMessage() {
+            const inputField = document.getElementById('userInput');
+            const chatBox = document.getElementById('chatBox');
+            const userText = inputField.value.trim();
+
+            if (!userText) return;
+
+            // Display user message
+            const userMsgDiv = document.createElement('div');
+            userMsgDiv.className = 'message user-message';
+            userMsgDiv.textContent = userText;
+            chatBox.appendChild(userMsgDiv);
+
+            inputField.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // Pick a random response after a short spooky delay
+            setTimeout(() => {
+                const randomReply = eerieResponses[Math.floor(Math.random() * eerieResponses.length)];
+                
+                const aiMsgDiv = document.createElement('div');
+                aiMsgDiv.className = 'message ai-message';
+                aiMsgDiv.textContent = randomReply;
+                chatBox.appendChild(aiMsgDiv);
+                
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 600);
+        }
+
+        function handleKey(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+    </script>
+</body>
 </html>
